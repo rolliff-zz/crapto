@@ -1,0 +1,9 @@
+LIBRARY crapto
+EXPORTS	
+	crapto_create_runtime	@1
+	array_create_array		@2
+	array_push_back			@3
+	array_pop_back			@4
+	array_select			@5
+	array_free_array		@6
+	crapto_set_logger		@7

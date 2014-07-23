@@ -1,0 +1,19 @@
+LIST(APPEND SOURCE 
+	crapto.c
+	)
+
+if(MSVC)
+	MESSAGE(STATUS "Yep MSVC")
+  set(CMAKE_EXE_LINKER_FLAGS 
+	"${CMAKE_EXE_LINKER_FLAGS} /DEF:crapto.def")
+
+	LIST(APPEND SOURCE 	
+		crapto.def
+	)
+endif()
+
+INCLUDE_DIRECTORIES(${ROOT}/src/public ${ROOT}/src/libcrapto)
+
+ADD_LIBRARY(crapto MODULE ${SOURCE})
+TARGET_LINK_LIBRARIES(crapto ${LIBRARY_OUTPUT_PATH}/${CONF}/libcrapto${CMAKE_LINK_LIBRARY_SUFFIX})
+ADD_DEPENDENCIES(crapto libcrapto)
