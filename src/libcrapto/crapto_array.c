@@ -78,3 +78,13 @@ length_t array_capacity(array_t* _arr)
   arr = (array_impl_t*) _arr;
   return arr->capacity;
 }
+
+void array_dump(array_t* arr)
+{ 
+  unsigned n;
+  array_impl_t* a = (array_impl_t*) arr;
+  for(n=0;n<a->size;++n)
+  {
+
+  }
+}

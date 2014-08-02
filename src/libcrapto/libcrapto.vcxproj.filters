@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="Windows-1252"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="crapto_runtime.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="crapto_array.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="crapto_buffer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="crapto_file.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="crapto_list.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="crapto_array.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="crapto_buffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="crapto_file.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="crapto_list.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="crapto_private.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\crapto.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{D0FACD8D-6E31-4921-90B0-5F60A5295973}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{BBBC1F34-00BF-4D4D-9042-D050C1396AE9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

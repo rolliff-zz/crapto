@@ -1,3 +1,13 @@
+/**
+  Crapto
+
+  My understanding of encryption is that crypto algorithms operate on
+  fixed sized blocks of data. Meaning, if you want to encrypt 64 bytes,
+  you perform 4 Encipher operations on 4 blocks of 16 bytes.
+  
+  If your data doesn't align according to the cipher block size, you're
+  going to be left with extra
+*/
 #pragma once 
 // ////////////////////////////////////////////////////////////////////////////
 // Basic Junk
@@ -97,27 +107,11 @@ CRAPTO_API void crapto_set_logger(crapto_log_fn fn);
 // ////////////////////////////////////////////////////////////////////////////
 
 /**
-  Base for buffer read/write objects
+  Reference to a position in a buffer
 */
-typedef struct crapto_buffer_io_base_t 
-{
-  void* reserved; 
+typedef struct { void* reserved; }* crapto_cursor;
 
-} crapto_buffer_io_base_t;
-
-/**
-  Buffer Reader
-*/
-typedef struct crapto_buffer_reader_t{
-  crapto_buffer_io_base_t* base;
-} crapto_buffer_reader_t;
-
-/**
-  Buffer Writer
-*/
-typedef struct crapto_buffer_writer_t{
-  crapto_buffer_io_base_t* base;
-} crapto_buffer_writer_t;
+typedef int (*crapto_block_visitor_fn)(void* ctx, length_t buffer_pos, byte_t* data, length_t data_length);
 
 /**
   A Buffer
@@ -132,30 +126,26 @@ typedef struct crapto_buffer_t
   void (*encrypt_buffer)(struct crapto_buffer_t* buffer, crapto_crypto_t* c);
   void (*decrypt_buffer)(struct crapto_buffer_t* buffer, crapto_crypto_t* c);
 
-  crapto_buffer_writer_t* (*new_writer)(struct crapto_buffer_t* buffer);
-  crapto_buffer_reader_t* (*new_reader)(struct crapto_buffer_t* buffer);
-  void (*delete_writer)(crapto_buffer_writer_t* writer);
-  void (*delete_reader)(crapto_buffer_reader_t* reader);
-
-  // ///////////////////////
-  // Read/Write
-  // ///////////////////////
-  length_t (*write)(crapto_buffer_writer_t* writer, const byte_t* data, length_t length);
-  length_t (*read)(crapto_buffer_reader_t* reader, byte_t* data, length_t length);
   
+  // ///////////////////////
+  // Cursor
+  // ///////////////////////
+  crapto_cursor (*open_cursor)(struct crapto_buffer_t* buffer);
+  void (*close_cursor)(crapto_cursor ref);
+  length_t (*write)(crapto_cursor writer, const byte_t* data, length_t length);
+  length_t (*read)(crapto_cursor reader, byte_t* data, length_t length);
+  void (*set_position)(crapto_cursor buffer_io_base, length_t pos);  
+  length_t (*get_position)(crapto_cursor buffer_io_base);
+  length_t (*write_to_file)(crapto_cursor reader, const char* filename, length_t limit);
+  length_t (*read_from_file)(crapto_cursor writer, const char * filename, length_t limit);
+
   // ///////////////////////
   // Buffer Position
   // ///////////////////////
   length_t (*get_capacity)(struct crapto_buffer_t* buffer);
   length_t (*get_size)(struct crapto_buffer_t* buffer);
-  length_t (*get_position)(crapto_buffer_io_base_t* buffer_io_base);
-  void (*set_position)(crapto_buffer_io_base_t* buffer_io_base, length_t pos);
-
-  // ///////////////////////
-  // Utility
-  // ///////////////////////
-  length_t (*write_to_file)(crapto_buffer_reader_t* reader, const char* filename, length_t limit);
-  length_t (*read_from_file)(crapto_buffer_writer_t* writer, const char * filename, length_t limit);
+  
+  void (*visit)(struct crapto_buffer_t* buffer, crapto_block_visitor_fn visitor, void* ctx, length_t start, length_t count);
 
 } crapto_buffer_t;
 
@@ -233,6 +223,7 @@ typedef struct crapto_runtime_t
   crapto_file_t* (*new_file1)(struct crapto_runtime_t* runtime, const char* filename);
 
   void (*delete_file)(crapto_file_t* file);
+
 
   // ///////////////////////
   // Buffers

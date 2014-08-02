@@ -11,6 +11,7 @@ CRAPTO_API void* array_select(array_t* arr, unsigned index);
 CRAPTO_API void array_free_array(crapto_runtime_t* rt, array_t* arr);
 CRAPTO_API length_t array_size(array_t* arr);
 CRAPTO_API length_t array_capacity(array_t* arr);
+CRAPTO_API void array_dump(array_t* arr);
 
 #define CRAPTO_DEFINE_ARRAY_OF(T)\
   typedef struct array_of_##T## {void* reserved; }array_of_##T##;\
@@ -27,4 +28,6 @@ CRAPTO_API length_t array_capacity(array_t* arr);
   __inline length_t array_of_##T##_size(array_of_##T##* arr)\
     {return array_size((array_t*)arr);}\
   __inline length_t array_of_##T##_capacity(array_of_##T##* arr)\
-    {return array_capacity((array_t*)arr);}
+    {return array_capacity((array_t*)arr);}\
+  __inline void array_of_##T##_dump(array_of_##T##* arr)\
+    { array_dump((array_t*)arr); }

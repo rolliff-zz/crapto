@@ -56,7 +56,36 @@ void init_crc()
     int zero = 0;
     int x = 1 / zero;
   }
+
+  int count = sizeof(crc_thing);
+  unsigned char * iter = (unsigned char *)crc_thing;
+  unsigned int CRC;
+  CrcStart(CRC);
+  for(unsigned n = 0; n  < count;n+=32)
+  {
+    crc_append(iter+n,32,&CRC);
+  }
+  CrcEnd(CRC);
+
+  pass = CRC_ANSWER == (crc ^ 0xffffffff);
+
+  pass &= CRC == CRC_ANSWER;
+  if(0 == pass)
+  {
+    __debugbreak();
+    int zero = 0;
+    int x = 1 / zero;
+  }
 }
+
+void crc_append(unsigned char* data, int length, unsigned int* CRC)
+{
+  while (length--)
+	{
+		(*CRC) = ((*CRC) >> 8) ^ crc_thing[ ( *CRC ^ *data++) & 0xFF ];
+	}
+}
+
 unsigned int crc_of (unsigned char *data, int length)
 {
 	unsigned int CRC = 0xffffffff;
